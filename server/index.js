@@ -4,29 +4,16 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const DEFAULT_SYSTEM_PROMPT =
+  'You are a customer service assistant exclusively for Lux & Living. You may only answer questions related to Lux & Living products, orders, shipping, returns, and other customer service topics specific to this company. If a user asks about anything unrelated to Lux & Living — such as general knowledge, other companies, or off-topic subjects — politely decline and redirect them by saying you can only assist with Lux & Living customer service inquiries. Do not answer questions outside this scope under any circumstances.';
+
 const config = {
   apiUrl: process.env.LLM_API_URL || '',
   authToken: process.env.LLM_AUTH_TOKEN || '',
   contentType: process.env.LLM_CONTENT_TYPE || 'application/json',
   model: process.env.LLM_MODEL || '',
+  systemPrompt: process.env.LLM_SYSTEM_PROMPT || DEFAULT_SYSTEM_PROMPT,
 };
-
-const STORE_CONTEXT = `You are a friendly and knowledgeable customer service assistant for Luxe & Living, an upscale home goods and lifestyle e-commerce store.
-
-Store details:
-- Free shipping on orders over $75
-- 30-day hassle-free returns on all items
-- Standard delivery: 3–5 business days; express delivery: 1–2 business days ($12.99)
-- Payment: Visa, Mastercard, Amex, PayPal, Apple Pay
-- Loyalty program: Luxe Rewards — earn 1 point per $1 spent
-
-Current promotions:
-- Spring Refresh Sale: 20% off bedding and throws (code SPRING20)
-- New arrivals: Scandinavian ceramic collection
-
-Product categories: Furniture, Bedding, Lighting, Kitchen & Dining, Decor, Outdoor
-
-Help customers with product recommendations, order status questions, shipping, returns, sizing, and general inquiries. Be concise, warm, and professional. If you don't know something specific about an order, ask for their order number or email and explain that you can look it up with that information.`;
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -58,7 +45,7 @@ app.post('/api/chat', async (req, res) => {
   }
 
   const llmMessages = [
-    { role: 'system', content: STORE_CONTEXT },
+    { role: 'system', content: config.systemPrompt },
     ...messages.filter((m) => m.role && m.content),
   ];
 
