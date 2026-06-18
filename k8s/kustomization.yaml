@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: luxe-living
+
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  # - route.yaml  # OpenShift: comment ingress.yaml above and uncomment this
+
+labels:
+  - pairs:
+      app.kubernetes.io/name: luxe-living-store
+      app.kubernetes.io/part-of: website-with-chatbot
+    includeSelectors: false
+
+images:
+  - name: luxe-living-store
+    newName: luxe-living-store
+    newTag: latest

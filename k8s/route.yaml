@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: luxe-living-store
+  labels:
+    app: luxe-living-store
+spec:
+  to:
+    kind: Service
+    name: luxe-living-store
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
