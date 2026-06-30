@@ -133,3 +133,5 @@ kubectl apply -f k8s/ingress.yaml   # optional — edit host first
     ├── route.yaml        # OpenShift
     └── ingress.yaml      # Generic K8s
 ```
+Note:
+Sucessfully tested with `llama-scout-17b`
