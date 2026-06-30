@@ -135,3 +135,9 @@ kubectl apply -f k8s/ingress.yaml   # optional — edit host first
 ```
 Note:
 Sucessfully tested with `llama-scout-17b`
+
+--tensor-parallel-size=4
+--max-model-len=4096
+--gpu-memory-utilization=0.95
+
+are parameters you will need for RHOAI
